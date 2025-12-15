@@ -1,10 +1,10 @@
 import { createServer } from "http";
 import express from "express";
 import { Server } from "socket.io";
-import connectDb from "../db";
+import connectDb from "./db";
 import RoomCodeGenerator from "./shared/utils/generateRoomId";
-import { filesModel } from "../db/models/filesModel";
-import { app } from "../config";
+import { filesModel } from "./db/models/filesModel";
+import { app } from "./config";
 
 const expressapp = express();
 const server = createServer(expressapp);
@@ -12,7 +12,7 @@ const io = new Server(server, {
   cors: { origin: app.allowedOrigins, methods: ["GET", "POST"] },
 });
 
-const PORT = process.env.PORT || 1234;
+const PORT = process.env["PORT"] || 1234;
 
 io.on("connection", (socket) => {
   console.log("Client connected:", socket.id);
