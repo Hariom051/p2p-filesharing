@@ -1,0 +1,17 @@
+{
+  "name": "p2p-files",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@types/express": "^5.0.6",
+    "express": "^4.17.1",
+    "mongoose": "^9.0.1",
+    "nanoid": "^5.1.6",
+    "socket.io": "^4.8.1",
+    "uuid": "^13.0.0"
+  },
+  "scripts": {
+    "start": "bun run --watch src/server.ts"
+  }
+}
