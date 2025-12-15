@@ -5,6 +5,7 @@ import { Download, Check } from "lucide-react";
 import streamSaver from "streamsaver";
 import { app } from "../config";
 import { getFileIcon } from "../shared/components/getFileExtensionIcon";
+streamSaver.mitm = "/StreamSaver/mitm.html";
 
 interface FileMeta {
   name: string;
