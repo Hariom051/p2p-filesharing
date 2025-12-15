@@ -1,14 +1,14 @@
 {
   "version": 2,
   "functions": {
-    "src/index.ts": {
-      "runtime": "bun"
+    "api/index.ts": {
+      "runtime": "bun@1.1.0"
     }
   },
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "src/index.ts"
+      "dest": "api/index.ts"
     }
   ]
 }
