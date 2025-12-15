@@ -3,7 +3,7 @@
   "builds": [
     {
       "src": "src/index.ts",
-      "use": "@vercel/bun"
+      "use": "bun-vercel"
     }
   ],
   "routes": [
@@ -11,5 +11,6 @@
       "src": "/(.*)",
       "dest": "src/index.ts"
     }
-  ]
+  ],
+  "buildCommand": "bun run build"
 }
