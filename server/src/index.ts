@@ -14,6 +14,10 @@ const io = new Server(server, {
 
 const PORT = process.env["PORT"] || 1234;
 
+expressapp.get("/", (req, res) => {
+  return res.json({ message: "Welcome to xerrasend" });
+});
+
 io.on("connection", (socket) => {
   console.log("Client connected:", socket.id);
 
