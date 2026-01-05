@@ -197,12 +197,29 @@ export default function Sender() {
     socketRef.current = socket;
 
     socket.on("connect", () => {
-      // console.log("Socket connected:", socket.id);
+      // console.log("Socket connected:", socket.id); after connect we will send filesmeta data
+      const filesMetadata = files.map((file) => ({
+        name: file.name,
+        size: file.size,
+        type: file.type,
+      }));
+
+      if (socket.connected) {
+        socket.emit("create-room", {
+          files: filesMetadata,
+        });
+      }
+    });
+
+    socket.on("connect_error", (error) => {
+      toast.error(error?.message ?? "Websocket connection error");
+      setIsGeneratingLink(false);
     });
 
     socket.on("room-created", ({ roomId: newRoomId }: { roomId: string }) => {
       roomIdRef.current = newRoomId;
       setShareUrl(`${window.location.origin}/receive/${newRoomId}`);
+      setIsGeneratingLink(false);
     });
 
     socket.on("receiver-joined", async () => {
@@ -236,21 +253,6 @@ export default function Sender() {
     setIsGeneratingLink(true);
     filesRef.current = files;
     connectSocket();
-
-    const filesMetadata = files.map((file) => ({
-      name: file.name,
-      size: file.size,
-      type: file.type,
-    }));
-
-    setTimeout(() => {
-      if (socketRef.current) {
-        socketRef.current.emit("create-room", {
-          files: filesMetadata,
-        });
-      }
-      setIsGeneratingLink(false);
-    }, 500);
   };
 
   const copyToClipboard = (): void => {
@@ -411,6 +413,7 @@ export default function Sender() {
                             {!shareUrl && (
                               <button
                                 onClick={() => removeFile(index)}
+                                disabled={isGeneratingLink}
                                 className="ml-4 text-gray-400 hover:text-red-500 transition flex-shrink-0 cursor-pointer"
                                 aria-label="Remove file"
                               >
@@ -444,7 +447,9 @@ export default function Sender() {
                       </button>
                       <button
                         onClick={() => setFiles([])}
-                        className="inline-flex items-center gap-2 bg-gray-200 text-gray-700 px-8 py-4 rounded-full font-semibold hover:bg-gray-300 transition cursor-pointer"
+                        disabled={isGeneratingLink}
+                        className={`inline-flex items-center gap-2 bg-gray-200 text-gray-700 px-8 py-4 rounded-full font-semibold hover:bg-gray-300 transition cursor-pointer
+                        `}
                       >
                         Clear All Files
                       </button>
